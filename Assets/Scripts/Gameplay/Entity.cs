@@ -39,14 +39,20 @@ public abstract class Entity : MonoBehaviour
     {
         currentHealth -= damage;
 
-        if (currentHealth <= 0 && OnDestroyed != null)
+        if (currentHealth <= 0)
         {
-            OnDestroyed.Invoke();
+            Destroyed();
         }
         else if (OnDamageTaken != null)
         {
             OnDamageTaken.Invoke();
         }
+    }
+
+    public virtual void Destroyed()
+    {
+        if (OnDestroyed != null)
+            OnDestroyed.Invoke();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

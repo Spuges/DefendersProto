@@ -26,46 +26,52 @@ public class Defender : Entity
         curVel = 0f;
         curAccel = 0f;
         curStrafe = 0f;
+
+        registerInputs();
     }
 
-    public void StrafeDown()
+    public override void Destroyed()
     {
-
-    }
-
-    public void StrafeUp()
-    {
-
+        base.Destroyed();
+        PlayerInputSender.UnRegisterInputs();
     }
 
     // Strafing is actually up and down.
-    public void Strafe(float velocity)
+    public void Strafe(float val)
     {
-        curStrafe = velocity;
+        curStrafe = Strafing * val;
     }
 
-    public void Accelerate(float velocity)
+    public void StrafeDown(float val)
     {
-        curAccel = velocity;
+    }
+
+    public void StrafeUp(float val)
+    {
+    }
+
+    public void Accelerate(float val)
+    {
+        curAccel = Acceleration * val;
     }
 
     private void LateUpdate()
     {
         if(Input.GetKey(KeyCode.DownArrow))
         {
-            Strafe(-Strafing);
+            Strafe(-1f);
         }
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            Strafe(Strafing);
+            Strafe(1f);
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Accelerate(-Acceleration);
+            Accelerate(-1f);
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            Accelerate(Acceleration);
+            Accelerate(1f);
         }
 
         if (!Mathf.Approximately(0f, curAccel))
@@ -85,5 +91,14 @@ public class Defender : Entity
 
         curAccel = 0f;
         curStrafe = 0f;
+    }
+
+    private void registerInputs()
+    {
+        PlayerInputSender.RegisterInputAction(PInput.LEFT, PInputType.FOCUS, Accelerate);
+        PlayerInputSender.RegisterInputAction(PInput.RIGHT, PInputType.FOCUS, Accelerate);
+
+        PlayerInputSender.RegisterInputAction(PInput.UP, PInputType.FOCUS, Strafe);
+        PlayerInputSender.RegisterInputAction(PInput.DOWN, PInputType.FOCUS, Strafe);
     }
 }

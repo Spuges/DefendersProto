@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 50253299641709706}
   - component: {fileID: 70753611643810274}
   - component: {fileID: 114676859497976814}
+  - component: {fileID: 114212106887588110}
   m_Layer: 8
   m_Name: Defender
   m_TagString: Untagged
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1488815771843654}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.8, y: -2.63, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,6 +79,18 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 5.13, y: 2.56}
   m_Direction: 1
+--- !u!114 &114212106887588110
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1488815771843654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588f80c5bf5610d42bc582b02ddb504b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InitialDirection: 1
 --- !u!114 &114676859497976814
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,15 +118,12 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  Acceleration: 15
-  Strafing: 15
+  Acceleration: 0.3
+  Strafing: 4
   ProjectilePrefab: {fileID: 0}
-  PIDCtrl:
-    pFactor: 0.2
-    iFactor: 0.05
-    dFactor: 0.001
-  MaxAcceleration: 50
-  MaxStrafe: 50
+  HeightBounds: {x: -4, y: 4}
+  MaxAcceleration: 0.4
+  MaxStrafe: 1
 --- !u!212 &212087198436638114
 SpriteRenderer:
   m_ObjectHideFlags: 1

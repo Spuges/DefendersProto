@@ -10,9 +10,10 @@ public class Defender : Entity
 
     public GameObject ProjectilePrefab;
 
+    public Vector2 HeightBounds;
+
     // Guess I'll just put the player inputs here, uh?
-    public PIDV2 PIDCtrl;       // Falloff
-    private Vector2 curVel;     // Velocity
+    private float curVel;     // Velocity
     public float MaxAcceleration;
     private float curAccel;     // Acceleration
     public float MaxStrafe;
@@ -22,7 +23,7 @@ public class Defender : Entity
     {
         base.ResetObject();
 
-        curVel = Vector3.zero;
+        curVel = 0f;
         curAccel = 0f;
         curStrafe = 0f;
     }
@@ -40,14 +41,12 @@ public class Defender : Entity
     // Strafing is actually up and down.
     public void Strafe(float velocity)
     {
-        curStrafe += velocity * Time.deltaTime;
-        curStrafe = Mathf.Clamp(curStrafe, -MaxStrafe, MaxStrafe);
+        curStrafe = velocity;
     }
 
     public void Accelerate(float velocity)
     {
-        curAccel += velocity * Time.deltaTime;
-        curAccel = Mathf.Clamp(curAccel, -MaxAcceleration, MaxAcceleration);
+        curAccel = velocity;
     }
 
     private void LateUpdate()
@@ -69,8 +68,22 @@ public class Defender : Entity
             Accelerate(Acceleration);
         }
 
-        Vector2 newVel = new Vector2(curVel.x + curAccel, curVel.y + curStrafe);
+        if (!Mathf.Approximately(0f, curAccel))
+        {
+            curVel += curAccel * Time.deltaTime;
+            curVel = Mathf.Clamp(curVel, -MaxAcceleration, MaxAcceleration);
+        }
+        else
+            curVel = Mathf.MoveTowards(curVel, 0, Acceleration * Time.deltaTime / 2f);
 
-        transform.Translate(PIDCtrl.Update(newVel, transform.position, Time.deltaTime));
+        curStrafe = curStrafe * Time.deltaTime;
+        curStrafe = Mathf.Clamp(curStrafe, HeightBounds.x - transform.position.y, HeightBounds.y - transform.position.y);
+
+        Vector2 transVel = new Vector2(curVel, curStrafe);
+        
+        transform.Translate(transVel);
+
+        curAccel = 0f;
+        curStrafe = 0f;
     }
 }

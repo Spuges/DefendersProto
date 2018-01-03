@@ -30,7 +30,6 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
     public PInput InputType;
     public float InputValue = 0f;
 
-    private bool wasClicked = false;
     private bool hasFocus = false;
 
     private Coroutine inpUpdate = null;
@@ -89,33 +88,19 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        wasClicked = true;
-
-        if (inpUpdate != null)
-            StopCoroutine(inpUpdate);
-
-        inpUpdate = StartCoroutine(inputUpdate());
-
-        if (onInputDown != null)
-            onInputDown.Invoke(InputValue);
+        OnPointerEnter(eventData);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (wasClicked)
-        {
-            if (onInputUp != null)
-                onInputUp.Invoke(InputValue);
-
-            wasClicked = false;
-        }
+        OnPointerExit(eventData);
     }
 
     private IEnumerator inputUpdate()
     {
-        while (wasClicked)
+        while (hasFocus)
         {
-            if (hasFocus && onInput != null)
+            if (onInput != null)
                 onInput.Invoke(InputValue);
 
             yield return null;
@@ -124,11 +109,22 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (onInputDown != null)
+            onInputDown.Invoke(InputValue);
+
         hasFocus = true;
+        inpUpdate = StartCoroutine(inputUpdate());
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         hasFocus = false;
+
+        if (inpUpdate != null)
+            StopCoroutine(inpUpdate);
+
+        if (onInputUp != null && hasFocus)
+            onInputUp.Invoke(InputValue);
     }
 }

@@ -68,4 +68,14 @@ public abstract class Entity : MonoBehaviour
             source.DamageDone();
         }
     }
+
+    public void DisableAndReuse()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void InstantiateObject(GameObject obj)
+    {
+        Instantiate(obj, transform.position, Quaternion.identity);
+    }
 }

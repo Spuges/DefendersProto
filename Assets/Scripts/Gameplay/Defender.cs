@@ -16,7 +16,6 @@ public class Defender : Entity
     private float curVel;     // Velocity
     public float MaxAcceleration;
     private float curAccel;     // Acceleration
-    public float MaxStrafe;
     private float curStrafe;    // Strafe
 
     public override void ResetObject()

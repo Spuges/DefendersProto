@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Invader : Entity
 {
-    private void OnEnable()
+    protected override void Start()
     {
+        base.Start();
         InvaderManager.RegisterNewInvader(this);
+
     }
 
     private void OnDisable()

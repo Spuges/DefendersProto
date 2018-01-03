@@ -2,13 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Base class for gameplay entities
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class Entity : MonoBehaviour
+public abstract class Entity : MonoBehaviour, IReusable
 {
+    // Set after instantiaton, from the original object.
+    // Only used for object pooling and comparison of types..
+    public int ObjectID 
+    {
+        get
+        {
+            if (objectID.HasValue)
+                return objectID.Value;
+            else
+                return GetInstanceID();
+        }
+        set
+        {
+            objectID = value;
+        }
+    }
+
+    public bool Poolable
+    {
+        get { return objectID.HasValue; }
+    }
+
+    private int? objectID = null;
+
     public int Health = 1;
     private int currentHealth;
 
@@ -18,7 +43,7 @@ public abstract class Entity : MonoBehaviour
     public UnityEvent OnObjectReset;
     public UnityEvent OnDamageTaken;
     public UnityEvent OnDestroyed;
-
+    
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -34,8 +59,15 @@ public abstract class Entity : MonoBehaviour
     {
         currentHealth = Health;
 
+        gameObject.SetActive(true);
+
         if(OnObjectReset != null)
             OnObjectReset.Invoke();
+    }
+
+    public GameObject GetObject
+    {
+        get { return gameObject; }
     }
 
     public virtual void DamageTaken(int damage)
@@ -72,6 +104,7 @@ public abstract class Entity : MonoBehaviour
     public void DisableAndReuse()
     {
         gameObject.SetActive(false);
+        ObjectPool.AddToReusePool(this);
     }
 
     public void InstantiateObject(GameObject obj)

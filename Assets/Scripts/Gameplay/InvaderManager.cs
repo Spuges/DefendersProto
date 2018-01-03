@@ -29,7 +29,10 @@ public class InvaderManager : MonoBehaviour
 
     public static void RemoveInvader(Invader invdr)
     {
-        I.invaders.Remove(invdr);
+        if (I)
+        {
+            I.invaders.Remove(invdr);
+        }
     }
 
     public static bool IsInsideBounds(Vector2 position)
@@ -45,6 +48,14 @@ public class InvaderManager : MonoBehaviour
 
     public void ClearObjects()
     {
+        for (; 0 < invaders.Count;)
+        {
+            if (invaders[0] == null)
+                invaders.RemoveAt(0);
+            else
+                invaders[0].DisableAndReuse();
+        }
+
         if (updateRoutine != null)
             StopCoroutine(updateRoutine);
     }
@@ -76,7 +87,7 @@ public class InvaderManager : MonoBehaviour
 
         if(invaders.Count < maxOpponentsOnBoard)
         {
-            Invader invdr = Instantiate<Invader>(InvaderPrefab);
+            Invader invdr = ObjectPool.CreateObject<Invader>(InvaderPrefab);
 
             invdr.ResetObject();
 

@@ -176,7 +176,19 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   OnDestroyed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114676859497976814}
+        m_MethodName: InstantiateObject
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1993533851224102, guid: bcbddc0cb57612243bc897dc6dc3ca85,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Acceleration: 0.2
@@ -225,7 +237,7 @@ ParticleSystem:
   stopAction: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1

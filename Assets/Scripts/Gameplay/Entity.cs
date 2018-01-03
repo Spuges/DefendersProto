@@ -58,11 +58,10 @@ public abstract class Entity : MonoBehaviour
             OnDestroyed.Invoke();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnParticleCollision(GameObject other)
     {
-        Debug.Log("Collision; " + collision.name);
         DamageSource source = null;
-        if (source = collision.GetComponent<DamageSource>())
+        if (source = other.GetComponent<DamageSource>())
         {
             Debug.Log("Damage!!; " + source.Damage);
             DamageTaken(source.Damage);

@@ -44,10 +44,11 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public static void RegisterInputAction(PInput input, PInputType type, System.Action<float> action)
     {
-        PlayerInputSender pinput = senders.Find(o => o.InputType == input);
-        if(pinput)
+        List<PlayerInputSender> inputListeners = senders.FindAll(o => o.InputType == input);
+        if(inputListeners.Count > 0)
         {
-            pinput.setup(type, action);
+            foreach(PlayerInputSender pis in inputListeners)
+                pis.setup(type, action);
         }
         else
         {

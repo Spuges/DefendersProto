@@ -11,8 +11,8 @@ public class FollowCameraTarget : MonoBehaviour
 
     private void Start()
     {
-        FollowCamera.CameraTargetChanged(this);
         currentOrientation = InitialDirection;
+        FollowCamera.CameraTargetChanged(this);
 
         PlayerInputSender.RegisterInputAction(PInput.LEFT, PInputType.GAINED_FOCUS, onHorizontalMovement);
         PlayerInputSender.RegisterInputAction(PInput.RIGHT, PInputType.GAINED_FOCUS, onHorizontalMovement);

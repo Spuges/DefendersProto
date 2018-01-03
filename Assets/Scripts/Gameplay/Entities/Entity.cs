@@ -63,7 +63,7 @@ public abstract class Entity : MonoBehaviour
         DamageSource source = null;
         if (source = other.GetComponent<DamageSource>())
         {
-            Debug.Log("Damage!!; " + source.Damage);
+            // Debug.Log("Damage!!; " + source.Damage);
             DamageTaken(source.Damage);
             source.DamageDone();
         }

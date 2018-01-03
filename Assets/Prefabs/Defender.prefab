@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 70753611643810274}
   - component: {fileID: 114676859497976814}
   - component: {fileID: 114212106887588110}
+  - component: {fileID: 95985017010984708}
   m_Layer: 8
   m_Name: Defender
   m_TagString: Untagged
@@ -112,6 +113,23 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 5.13, y: 2.56}
   m_Direction: 1
+--- !u!95 &95985017010984708
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1488815771843654}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 78fa8d604159e6b4ca9830afc30b13d2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114212106887588110
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,6 +202,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 1993533851224102, guid: bcbddc0cb57612243bc897dc6dc3ca85,
             type: 2}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 198430891416093704}
+        m_MethodName: Clear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

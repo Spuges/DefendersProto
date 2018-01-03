@@ -24,7 +24,12 @@ public class ObjectPool : MonoBehaviour
         }
     }
     private static ObjectPool _i;
-    
+
+    private void Awake()
+    {
+        reusePool = new Dictionary<int, Queue<IReusable>>();
+    }
+
     public static void AddToReusePool(IReusable obj)
     {
         if (!obj.Poolable)

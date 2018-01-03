@@ -1,16 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Helpers;
 
-public class ScoreCounter : MonoBehaviour {
+public class ScoreCounter : MonoBehaviour
+{
+    public static ScoreCounter I { get; set; }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public Text ScoreText;
+    public string ScoringFormat = "Score: {0}";
+
+    private int curScore = 0;
+
+    public string PlayerPrefsID = "PLAYER_SCORE";
+
+    private void Awake()
+    {
+        I = this;
+    }
+
+    private void Start()
+    {
+        ResetScore();
+    }
+
+    public void ResetScore()
+    {
+        curScore = 0;
+        SetScore(0);
+    }
+
+    public void GiveScore(int count)
+    {
+        curScore += count;
+        SetScore(curScore);
+    }
+
+    public void SetScore(int count)
+    {
+        if(ScoreText)
+        {
+            ScoreText.text = string.Format(ScoringFormat, count);
+        }
+    }
 }

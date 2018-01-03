@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InvaderManager : MonoBehaviour
 {
     public static InvaderManager I { get; set; }
+
+    public float PlayerRespawnDelay = 3f;
 
     public Vector2 InvaderBounds;
 
@@ -21,10 +24,14 @@ public class InvaderManager : MonoBehaviour
     private List<Invader> invaders = new List<Invader>();
 
     public Invader InvaderPrefab;
+    public Defender PlayerObject;
+
+    public UnityEvent OnGameOver;
 
     public static void RegisterNewInvader(Invader invdr)
     {
-        I.invaders.Add(invdr);
+        if(I && !I.invaders.Contains(invdr))
+            I.invaders.Add(invdr);
     }
 
     public static void RemoveInvader(Invader invdr)
@@ -35,9 +42,13 @@ public class InvaderManager : MonoBehaviour
         }
     }
 
-    public static bool IsInsideBounds(Vector2 position)
+    public static bool IsInsideBounds(Vector2 p)
     {
-        return true;
+        Vector2 t = new Vector2(I.transform.position.x, I.transform.position.y);
+        Vector2 b = I.InvaderBounds;
+
+        return  (t.x - b.x < p.x && p.x < t.x + b.x) && // X
+                (t.y - b.y < p.y && p.y < t.y + b.y);   // Y
     }
 
     private void Awake()
@@ -63,10 +74,32 @@ public class InvaderManager : MonoBehaviour
     public void StartGame()
     {
         // Init
+        PlayerObject.ResetObject();
         startTime = Time.time;
-        StartCoroutine(update());
+        updateRoutine = StartCoroutine(update());
     }
 
+    public void SpawnPlayer()
+    {
+        if (0 < LifeCounter.I.LifeCount)
+        {
+            LifeCounter.I.LostLife();
+            StartCoroutine(playerRespawn());
+        }
+        else if(OnGameOver != null)
+        {
+            OnGameOver.Invoke();
+        }
+    }
+
+    private IEnumerator playerRespawn()
+    {
+        ClearObjects();
+        yield return new WaitForSeconds(PlayerRespawnDelay);
+        PlayerObject.ResetObject();
+        StartGame();
+    }
+        
     private IEnumerator update()
     {
         while(true)
@@ -76,7 +109,7 @@ public class InvaderManager : MonoBehaviour
         }
     }
 
-    private float SpawnInvader()
+    public float SpawnInvader()
     {
         float time = Time.time - startTime;
         maxOpponentsOnBoard = Mathf.RoundToInt(MaxOpponentsOnBoard.Evaluate(time));

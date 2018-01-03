@@ -18,6 +18,13 @@ public class Defender : Entity
     private float curAccel;     // Acceleration
     private float curStrafe;    // Strafe
 
+    protected override void Start()
+    {
+        base.Start();
+
+        registerInputs();
+    }
+
     public override void ResetObject()
     {
         base.ResetObject();
@@ -25,14 +32,13 @@ public class Defender : Entity
         curVel = 0f;
         curAccel = 0f;
         curStrafe = 0f;
-
-        registerInputs();
     }
 
     public override void Destroyed()
     {
         base.Destroyed();
-        PlayerInputSender.UnRegisterInputs();
+        gameObject.SetActive(false);
+        InvaderManager.I.SpawnPlayer();
     }
 
     // Strafing is actually up and down.

@@ -9,10 +9,15 @@ public class Invader : Entity
     protected override void Start()
     {
         base.Start();
-        InvaderManager.RegisterNewInvader(this);
 
         if(CollisionDamageSource == null)
             CollisionDamageSource = GetComponent<DamageSource>();
+    }
+
+    public override void ResetObject()
+    {
+        base.ResetObject();
+        InvaderManager.RegisterNewInvader(this);
     }
 
     private void OnDisable()
@@ -24,7 +29,8 @@ public class Invader : Entity
     {
         if(!InvaderManager.IsInsideBounds(new Vector2(transform.position.x, transform.position.y)))
         {
-
+            DisableAndReuse();
+            InvaderManager.I.SpawnInvader(); // Just spawn a new invader
         }
     }
 

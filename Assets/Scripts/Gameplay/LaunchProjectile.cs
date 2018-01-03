@@ -22,7 +22,7 @@ public class LaunchProjectile : MonoBehaviour
 
     public void TryToFire(float val)
     {
-        if(lastLaunch < Time.time)
+        if(gameObject.activeInHierarchy && lastLaunch < Time.time)
         {
             lastLaunch = Time.time + CoolDown;
 

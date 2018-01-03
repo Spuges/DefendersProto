@@ -6,6 +6,7 @@ using UnityEngine.Events;
 namespace Helpers
 {
     public class FloatEvent : UnityEvent<float> { }
+    public class IntEvent : UnityEvent<int> { }
 
     public static class Util
     {

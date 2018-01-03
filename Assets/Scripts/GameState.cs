@@ -12,6 +12,12 @@ public class GameState : MonoBehaviour
     public UnityEvent OnNewGame;
     public UnityEvent OnGameOver;
 
+    private void Awake()
+    {
+        // Initialization
+
+    }
+
     public void StartGame()
     {
         if (OnNewGame != null)

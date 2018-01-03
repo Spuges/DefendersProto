@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum PInput
 {
@@ -18,7 +19,7 @@ public enum PInputType
     LOST_FOCUS,
 }
 
-public class PlayerInputSender : MonoBehaviour
+public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public static List<PlayerInputSender> senders;
 
@@ -30,6 +31,9 @@ public class PlayerInputSender : MonoBehaviour
     public float InputValue = 0f;
 
     private bool wasClicked = false;
+    private bool hasFocus = false;
+
+    private Coroutine inpUpdate = null;
 
     public static void UnRegisterInputs()
     {
@@ -60,33 +64,6 @@ public class PlayerInputSender : MonoBehaviour
         senders.Add(this);
     }
 
-    public void OnMouseDown()
-    {
-        wasClicked = true;
-        if (onInputDown != null)
-            onInputDown.Invoke(InputValue);
-    }
-
-    public void OnMouseOver()
-    {
-        if(wasClicked)
-        {
-            if (onInput != null)
-                onInput.Invoke(InputValue);
-        }
-    }
-
-    public void OnMouseUp()
-    {
-        if (wasClicked)
-        {
-            if (onInputUp != null)
-                onInputUp.Invoke(InputValue);
-
-            wasClicked = false;
-        }
-    }
-
     protected void setup(PInputType type, System.Action<float> action)
     {
         switch(type)
@@ -108,5 +85,50 @@ public class PlayerInputSender : MonoBehaviour
         onInputDown = null;
         onInputUp = null;
         onInput = null;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        wasClicked = true;
+
+        if (inpUpdate != null)
+            StopCoroutine(inpUpdate);
+
+        inpUpdate = StartCoroutine(inputUpdate());
+
+        if (onInputDown != null)
+            onInputDown.Invoke(InputValue);
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        if (wasClicked)
+        {
+            if (onInputUp != null)
+                onInputUp.Invoke(InputValue);
+
+            wasClicked = false;
+        }
+    }
+
+    private IEnumerator inputUpdate()
+    {
+        while (wasClicked)
+        {
+            if (hasFocus && onInput != null)
+                onInput.Invoke(InputValue);
+
+            yield return null;
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hasFocus = true;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hasFocus = false;
     }
 }

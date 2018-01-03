@@ -82,6 +82,8 @@ public class PlayerInputSender : MonoBehaviour
         {
             if (onInputUp != null)
                 onInputUp.Invoke(InputValue);
+
+            wasClicked = false;
         }
     }
 

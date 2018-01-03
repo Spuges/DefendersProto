@@ -54,26 +54,9 @@ public class Defender : Entity
     {
         curAccel = Acceleration * val;
     }
-
+    
     private void LateUpdate()
     {
-        if(Input.GetKey(KeyCode.DownArrow))
-        {
-            Strafe(-1f);
-        }
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            Strafe(1f);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            Accelerate(-1f);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            Accelerate(1f);
-        }
-
         if (!Mathf.Approximately(0f, curAccel))
         {
             curVel += curAccel * Time.deltaTime;
@@ -86,8 +69,8 @@ public class Defender : Entity
         curStrafe = Mathf.Clamp(curStrafe, HeightBounds.x - transform.position.y, HeightBounds.y - transform.position.y);
 
         Vector2 transVel = new Vector2(curVel, curStrafe);
-        
-        transform.Translate(transVel);
+
+        transform.position += new Vector3(transVel.x, transVel.y, 0f);
 
         curAccel = 0f;
         curStrafe = 0f;

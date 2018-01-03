@@ -1,13 +1,51 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Helpers;
 
 public class FollowCameraTarget : MonoBehaviour
 {
-    public FollowCamera.CameraPoint InitialDirection = FollowCamera.CameraPoint.LEFT;
+    public FollowCamera.TargetOrientation InitialDirection = FollowCamera.TargetOrientation.LEFT;
+    private FollowCamera.TargetOrientation currentOrientation = FollowCamera.TargetOrientation.LEFT;
+    public FloatEvent OnDirectionChanged; // Acceleration direction changes
 
     private void Start()
     {
         FollowCamera.CameraTargetChanged(this);
+        currentOrientation = InitialDirection;
+
+        PlayerInputSender.RegisterInputAction(PInput.LEFT, PInputType.GAINED_FOCUS, onHorizontalMovement);
+        PlayerInputSender.RegisterInputAction(PInput.RIGHT, PInputType.GAINED_FOCUS, onHorizontalMovement);
+    }
+
+    public void ChangeDirection(float dir)
+    {
+        if(dir < 0f)
+            FollowCamera.ChangeDirection(FollowCamera.TargetOrientation.LEFT);
+        else
+            FollowCamera.ChangeDirection(FollowCamera.TargetOrientation.RIGHT);
+    }
+
+    private void onHorizontalMovement(float val)
+    {
+        if (val < 0f && currentOrientation == FollowCamera.TargetOrientation.RIGHT)
+        {
+            currentOrientation = FollowCamera.TargetOrientation.LEFT;
+            FollowCamera.ChangeDirection(currentOrientation);
+
+            transform.rotation = Quaternion.LookRotation(Vector3.back, Vector3.up);
+            if (OnDirectionChanged != null)
+                OnDirectionChanged.Invoke(val);
+        }
+        else if(0f < val && currentOrientation == FollowCamera.TargetOrientation.LEFT)
+        {
+            currentOrientation = FollowCamera.TargetOrientation.RIGHT;
+            FollowCamera.ChangeDirection(currentOrientation);
+
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+
+            if (OnDirectionChanged != null)
+                OnDirectionChanged.Invoke(val);
+        }
     }
 }

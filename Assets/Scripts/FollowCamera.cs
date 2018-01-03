@@ -5,7 +5,7 @@ using Helpers;
 
 public class FollowCamera : MonoBehaviour
 {
-    public enum CameraPoint
+    public enum TargetOrientation
     {
         LEFT = 1,
         RIGHT = 2
@@ -17,6 +17,7 @@ public class FollowCamera : MonoBehaviour
     public float LeftPointOffset;
     public float RightPointOffset;
 
+    private float targetOffset = 0f;
     private float currentOffset = 0f;
     public float MaxDelta = 3f;
 
@@ -25,36 +26,38 @@ public class FollowCamera : MonoBehaviour
     public static void CameraTargetChanged(FollowCameraTarget target)
     {
         _i.CameraTarget = target.transform;
-        _i.SwitchDirection((int)target.InitialDirection);
+        _i.switchDirection(target.InitialDirection);
+    }
+
+    public static void ChangeDirection(TargetOrientation dir)
+    {
+        _i.switchDirection(dir);
     }
 
     private void Awake()
     {
         _i = this;
     }
-
-    // Only int, so i can message from unityevents..
-    public void SwitchDirection(int dir)
+    
+    private void switchDirection(TargetOrientation dir)
     {
-        CameraPoint point = (CameraPoint)dir;
-        switch(point)
+        switch(dir)
         {
-            case CameraPoint.LEFT:
-                currentOffset = LeftPointOffset;
+            case TargetOrientation.LEFT:
+                targetOffset = LeftPointOffset;
                 break;
-            case CameraPoint.RIGHT:
-                currentOffset = RightPointOffset;
+            case TargetOrientation.RIGHT:
+                targetOffset = RightPointOffset;
                 break;
             default:
-                Debug.Log("Wut you do?");
                 break;
         }
     }
 
     public void LateUpdate()
     {
-
-        float x = CameraTarget.transform.position.x + XController.Update(CameraTarget.transform.position.x + currentOffset, transform.position.x, Time.deltaTime);
+        currentOffset += XController.Update(targetOffset, currentOffset, Time.deltaTime);
+        float x = CameraTarget.position.x + currentOffset;
         transform.position = new Vector3(x, transform.position.y, transform.position.z);
     }
 }

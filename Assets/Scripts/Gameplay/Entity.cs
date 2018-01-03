@@ -22,7 +22,10 @@ public abstract class Entity : MonoBehaviour
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+    }
 
+    protected virtual void Start()
+    {
         ResetObject();
     }
 

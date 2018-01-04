@@ -10,7 +10,7 @@ public class Defender : Entity
 
     public GameObject ProjectilePrefab;
 
-    public Vector2 HeightBounds;
+    public Vector2 HeightBounds { get; set; }
 
     // Guess I'll just put the player inputs here, uh?
     private float curVel;     // Velocity
@@ -20,6 +20,7 @@ public class Defender : Entity
 
     protected override void Start()
     {
+        HeightBounds = new Vector2(-InvaderManager.I.InvaderBounds.y, InvaderManager.I.InvaderBounds.y);
         base.Start();
 
         registerInputs();
@@ -83,10 +84,7 @@ public class Defender : Entity
 
     private void registerInputs()
     {
-        PlayerInputSender.RegisterInputAction(PInput.LEFT, PInputType.FOCUS, Accelerate);
-        PlayerInputSender.RegisterInputAction(PInput.RIGHT, PInputType.FOCUS, Accelerate);
-
-        PlayerInputSender.RegisterInputAction(PInput.UP, PInputType.FOCUS, Strafe);
-        PlayerInputSender.RegisterInputAction(PInput.DOWN, PInputType.FOCUS, Strafe);
+        PlayerInputSender.RegisterInputAction(PInput.HORIZONTAL, PInputType.FOCUS, Accelerate);
+        PlayerInputSender.RegisterInputAction(PInput.VERTICAL, PInputType.FOCUS, Strafe);
     }
 }

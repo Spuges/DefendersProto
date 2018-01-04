@@ -14,8 +14,7 @@ public class FollowCameraTarget : MonoBehaviour
         currentOrientation = InitialDirection;
         FollowCamera.CameraTargetChanged(this);
 
-        PlayerInputSender.RegisterInputAction(PInput.LEFT, PInputType.GAINED_FOCUS, onHorizontalMovement);
-        PlayerInputSender.RegisterInputAction(PInput.RIGHT, PInputType.GAINED_FOCUS, onHorizontalMovement);
+        PlayerInputSender.RegisterInputAction(PInput.HORIZONTAL, PInputType.FOCUS, onHorizontalMovement);
     }
 
     public void ChangeDirection(float dir)

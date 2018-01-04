@@ -60,4 +60,11 @@ public class FollowCamera : MonoBehaviour
         float x = CameraTarget.position.x + currentOffset;
         transform.position = new Vector3(x, transform.position.y, transform.position.z);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(LeftPointOffset * Vector3.right + transform.position, 0.1f);
+        Gizmos.DrawWireSphere(RightPointOffset * Vector3.right + transform.position, 0.1f);
+
+    }
 }

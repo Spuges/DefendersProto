@@ -5,10 +5,8 @@ using UnityEngine.EventSystems;
 
 public enum PInput
 {
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
+    HORIZONTAL,
+    VERTICAL,
     FIRE
 }
 
@@ -19,7 +17,7 @@ public enum PInputType
     LOST_FOCUS,
 }
 
-public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+public class PlayerInputSender : MonoBehaviour
 {
     public static List<PlayerInputSender> senders;
 
@@ -29,10 +27,6 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
 
     public PInput InputType;
     public float InputValue = 0f;
-
-    private bool hasFocus = false;
-
-    private Coroutine inpUpdate = null;
 
     public static void UnRegisterInputs()
     {
@@ -85,47 +79,5 @@ public class PlayerInputSender : MonoBehaviour, IPointerDownHandler, IPointerUpH
         onInputDown = null;
         onInputUp = null;
         onInput = null;
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        OnPointerEnter(eventData);
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        OnPointerExit(eventData);
-    }
-
-    private IEnumerator inputUpdate()
-    {
-        while (hasFocus)
-        {
-            if (onInput != null)
-                onInput.Invoke(InputValue);
-
-            yield return null;
-        }
-    }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (onInputDown != null)
-            onInputDown.Invoke(InputValue);
-
-        hasFocus = true;
-        inpUpdate = StartCoroutine(inputUpdate());
-
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        hasFocus = false;
-
-        if (inpUpdate != null)
-            StopCoroutine(inpUpdate);
-
-        if (onInputUp != null && hasFocus)
-            onInputUp.Invoke(InputValue);
     }
 }

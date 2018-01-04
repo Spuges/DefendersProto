@@ -35,6 +35,7 @@ public abstract class Entity : MonoBehaviour, IReusable
     private int? objectID = null;
 
     public int Health = 1;
+    public int GetCurrentHealth { get { return currentHealth; } }
     private int currentHealth;
 
     // Triggering purposes

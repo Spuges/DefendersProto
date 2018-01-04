@@ -208,7 +208,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 198430891416093704}
-        m_MethodName: Clear
+        m_MethodName: Stop
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -221,10 +221,9 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   Acceleration: 0.2
-  Strafing: 8
+  Strafing: 5
   ProjectilePrefab: {fileID: 0}
-  HeightBounds: {x: -4, y: 4}
-  MaxAcceleration: 0.2
+  MaxAcceleration: 0.175
 --- !u!114 &114821210636902056
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -264,7 +263,7 @@ ParticleSystem:
   lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 0
   useUnscaledTime: 0

@@ -15,6 +15,7 @@ public class InvaderManager : MonoBehaviour
     public AnimationCurve MaxOpponentsOnBoard;
     public AnimationCurve SpawnDelay;
     public AnimationCurve SpawnDelayDelta;
+    public AnimationCurve DifficultyDelta;
 
     private int maxOpponentsOnBoard;
     private float startTime = 0f;
@@ -27,6 +28,11 @@ public class InvaderManager : MonoBehaviour
     public Defender PlayerObject;
 
     public UnityEvent OnGameOver;
+
+    public static float GetDifficulty()
+    {
+        return Mathf.Clamp01(I.DifficultyDelta.Evaluate(Time.time - I.startTime));
+    }
 
     public static void RegisterNewInvader(Invader invdr)
     {
@@ -126,8 +132,6 @@ public class InvaderManager : MonoBehaviour
 
             Vector2 pos = new Vector2(transform.position.x, transform.position.y) + new Vector2(Random.Range(-InvaderBounds.x, InvaderBounds.x), Random.Range(-InvaderBounds.y, InvaderBounds.y));
             invdr.transform.position = pos;
-
-            Debug.Log(invaders.Count);
         }
 
         return delay;

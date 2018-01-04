@@ -22,8 +22,14 @@ public class VectorInput : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     
     private void Update()
     {
+#if UNITY_EDITOR
+        point = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        hasFocus = true;
+#endif
         if (hasFocus)
         {
+
+
             onStay();
         }
     }

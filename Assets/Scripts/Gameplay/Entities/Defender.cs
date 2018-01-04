@@ -17,6 +17,9 @@ public class Defender : Entity
     public float MaxAcceleration;
     private float curAccel;     // Acceleration
     private float curStrafe;    // Strafe
+    private Vector2 transVel;
+
+    public Vector2 GetVelocity { get { return transVel; } }
 
     protected override void Start()
     {
@@ -74,7 +77,7 @@ public class Defender : Entity
         curStrafe = curStrafe * Time.deltaTime;
         curStrafe = Mathf.Clamp(curStrafe, HeightBounds.x - transform.position.y, HeightBounds.y - transform.position.y);
 
-        Vector2 transVel = new Vector2(curVel, curStrafe);
+        transVel = new Vector2(curVel, curStrafe);
 
         transform.position += new Vector3(transVel.x, transVel.y, 0f);
 
